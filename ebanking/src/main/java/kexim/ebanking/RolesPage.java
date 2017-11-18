@@ -1,6 +1,9 @@
 package kexim.ebanking;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 public class RolesPage extends AdminHomePage {
 	WebDriver driver;
@@ -12,6 +15,16 @@ public class RolesPage extends AdminHomePage {
 	
 	//new role button
 	
+	// new Role
+		@FindBy(how = How.ID, using = "btnRoles")
+		private WebElement newRole;
+
+	
 	//click new role button
+	
+		public void newRole() {
+			this.newRole.click();
+		}
+
 
 }

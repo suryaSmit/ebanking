@@ -64,16 +64,32 @@ public class NewBranchCreationPage extends AdminHomePage {
 	private WebElement cancel;
 
 	//fill branch name
+	public void fillbranchName(String branchname) {
+		this.branchName.sendKeys(branchname);
+	}
 	
 	//fill address1
-	
+	public void fillAddress1(String address1) {
+		this.Address1.sendKeys(address1);
+	}
 	//fill address2
+	public void fillAddress2(String address2) {
+		this.Address2.sendKeys(address2);
+	}
 	
 	//fill address3
-	
+	public void fillAdress3(String address3) {
+		this.Address3.sendKeys(address3);
+	}
 	//fill  area
+	public void fillArea(String area) {
+		this.Area.sendKeys(area);
+	}
 	
 	//fill zipcode
+	public void fillZipcode(String zipcode) {
+		this.ZipCode.sendKeys(zipcode);
+	}
 	
 	// selectCountry
 	public void SelectCountry(String country) {

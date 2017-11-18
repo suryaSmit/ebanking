@@ -40,10 +40,16 @@ public class NewRoleCreation extends AdminHomePage {
 	private WebElement cancel;
 
 	// fill role name
-
+	
+    public void fillRolename(String rolename) {
+	this.RoleName.sendKeys(rolename);
+}
 	// fill role description
+    public void fillRoledescription(String roledescription) {
+	this.RoleDesc.sendKeys(roledescription);
+}
 
-	// selectRoleType
+// selectRoleType
 	public void selectRoleType(String RoleType) {
 		// Anonymous Object
 		new Select(this.RoleType).selectByVisibleText(RoleType);
