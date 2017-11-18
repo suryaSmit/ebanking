@@ -1,0 +1,38 @@
+GITHUB
+
+step 1: create repository in the server
+step 2: create local repositoty 
+step 3: link local repository to server(cloud)
+
+sign in to github site and create a new repositiory
+
+open eclipse and right click on maven project -> 
+team-> share project->select git-> click on create and create 
+new folder->click finish
+
+open git repository by (window tab > show view > other > git > git repository)
+
+right click on the folder in git repository and 
+click on commit > select the programs and give some comments >
+ click on commit button
+
+right click on remotes and create remote > click on 
+change >paste the url previously copied from github.com > 
+enter username and password of github site > click on finish > 
+click on advance > source ref add master branch and
+destination ref add master head > click on add spec > 
+select check box save specifications in origin > click finish
+> click save
+
+expand remotes > right click on origin and select push > 
+provide login creditials if asked > click push > click finish
+
+open github site and do login and check the project uploaded to github.
+
+Fetching data from GitHub
+
+Right click on the origin> click on fetch
+ (If there are any modifications in your project you are going get those in fetch
+window) ->click finish button
+
+Right click on the git -> click on pull (This will complete the fetch operation).
