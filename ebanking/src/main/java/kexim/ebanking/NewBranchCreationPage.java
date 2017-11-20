@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 public class NewBranchCreationPage extends AdminHomePage {
@@ -13,7 +14,7 @@ public class NewBranchCreationPage extends AdminHomePage {
 	public NewBranchCreationPage(WebDriver driver) {
 		super(driver);
 		this.driver = driver;
-		// TODO Auto-generated constructor stub
+		PageFactory.initElements(driver, this);
 	}
 
 	// branchName
@@ -41,7 +42,7 @@ public class NewBranchCreationPage extends AdminHomePage {
 
 	// country
 	@FindBy(how = How.ID, using = "lst_counrtyU")
-	private WebElement country;
+	public WebElement country;
 
 	// state
 	@FindBy(how = How.ID, using = "lst_stateI")
@@ -97,6 +98,9 @@ public class NewBranchCreationPage extends AdminHomePage {
 		new Select(this.country).selectByVisibleText(country);
 	}
 
+	public WebElement getDefaultCountry() {
+		return new Select(this.country).getFirstSelectedOption();
+	}
 	// selectState
 	public void SelectState(String state) {
 		new Select(this.state).selectByVisibleText(state);

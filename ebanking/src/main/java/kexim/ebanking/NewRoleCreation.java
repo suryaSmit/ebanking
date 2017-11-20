@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 public class NewRoleCreation extends AdminHomePage {
@@ -12,7 +13,7 @@ public class NewRoleCreation extends AdminHomePage {
 	public NewRoleCreation(WebDriver driver) {
 		super(driver);
 		this.driver = driver;
-		// TODO Auto-generated constructor stub
+		PageFactory.initElements(driver, this);
 	}
 
 	// RoleName
@@ -29,7 +30,7 @@ public class NewRoleCreation extends AdminHomePage {
 
 	// rest
 	@FindBy(how = How.ID, using = "Btn_Reset")
-	private WebElement rest;
+	private WebElement reset;
 
 	// submit
 	@FindBy(how = How.ID, using = "btninsert")
@@ -40,16 +41,16 @@ public class NewRoleCreation extends AdminHomePage {
 	private WebElement cancel;
 
 	// fill role name
-	
-    public void fillRolename(String rolename) {
-	this.RoleName.sendKeys(rolename);
-}
-	// fill role description
-    public void fillRoledescription(String roledescription) {
-	this.RoleDesc.sendKeys(roledescription);
-}
+	public void fillRolename(String rolename) {
+		this.RoleName.sendKeys(rolename);
+	}
 
-// selectRoleType
+	// fill role description
+	public void fillRoledescription(String roledescription) {
+		this.RoleDesc.sendKeys(roledescription);
+	}
+
+	// selectRoleType
 	public void selectRoleType(String RoleType) {
 		// Anonymous Object
 		new Select(this.RoleType).selectByVisibleText(RoleType);
@@ -61,8 +62,8 @@ public class NewRoleCreation extends AdminHomePage {
 	}
 
 	// click reset
-	public void rest() {
-		this.rest.click();
+	public void reset() {
+		this.reset.click();
 	}
 
 	// click cancel
