@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Reporter;
 import org.testng.annotations.AfterClass;
@@ -19,11 +20,15 @@ public class TestExecution {
 	AdminHomePage adminHomePageObj;
 	BranchesPage branchesPageObj;
 	NewBranchCreationPage newBranchCreationPageObj;
+	RolesPage RolesPageobj;
+	NewRoleCreation NewRoleCreationobj;
+	EmployeesPage EmployeesPageobj;
+	NewEmployeePageCreation NewEmployeePageCreationobj;
 	
 	@BeforeClass
 	public void launchBrowser() {
-		System.setProperty("webdriver.gecko.driver", "/Users/surya/Documents/selenium/softwares/geckodriver");
-		this.driver = new FirefoxDriver();
+		System.setProperty("webdriver.chrome.driver", "‪C:\\Users\\prudhviraj\\Music\\chromedriver_win32\\chromedriver.exe");
+		this.driver = new ChromeDriver();
 		driver.get("http://srssprojects.in/");
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -31,6 +36,11 @@ public class TestExecution {
 		adminHomePageObj = new AdminHomePage(driver);
 		branchesPageObj = new BranchesPage(driver);
 		newBranchCreationPageObj = new NewBranchCreationPage(driver); 
+	    RolesPageobj=new RolesPage(driver);
+	    NewRoleCreationobj=new NewRoleCreation(driver);
+	    EmployeesPageobj=new EmployeesPage(driver);
+	    NewEmployeePageCreationobj=new NewEmployeePageCreation(driver);
+	    
 	}
 	
 	@AfterClass
@@ -83,11 +93,8 @@ public class TestExecution {
 		newBranchCreationPageObj.SelectState("Andhra Pradesh");
 		newBranchCreationPageObj.SelectCity("Hyderabad");
 		newBranchCreationPageObj.clickReset();
-		if(newBranchCreationPageObj.getDefaultCountry().getText().equals("Select")) {
-			Reporter.log("test passed");
-		}else {
-			Reporter.log("test failed");
-		}	
+		
+	
 	}
 	
 	@Test(priority =2)
@@ -117,6 +124,88 @@ public class TestExecution {
 		}
 	}
 	
+	@Test(priority = 4)
+	public void testRoleCreation() {
+	   
+		adminHomePageObj.clickRoles();
+		RolesPageobj.clicknewRole();
+		NewRoleCreationobj.fillRolename("prudhviraj");
+		NewRoleCreationobj.fillRoledescription("he is a good man");
+		NewRoleCreationobj.selectRoleType("E");
+		NewRoleCreationobj.clicksubmit();
+		String alertText = driver.switchTo().alert().getText();
+		driver.switchTo().alert().accept();
+		if(alertText.contains("new Role creation with id")) {
+			Reporter.log("new Role has been creted succesfully");
+		}else {
+			Reporter.log("role creation failed");
+		}
+	}
+       
+	@Test(priority = 5)
+	public void testRoleCreationReset() {
+		adminHomePageObj.clickRoles();
+		RolesPageobj.clicknewRole();
+		NewRoleCreationobj.fillRolename("prudhviraj");
+		NewRoleCreationobj.fillRoledescription("he is a good man");
+		NewRoleCreationobj.selectRoleType("E");
+		NewRoleCreationobj.clickreset();
+		
+		
+	}
 	
-
+	@Test(priority = 6)
+	public void testRoleCreationCancelWithOutData() {
+		adminHomePageObj.clickRoles();
+		RolesPageobj.clicknewRole();
+		NewRoleCreationobj.clickcancel();
+		if(RolesPageobj.newRoleIsDisplayed()){
+			Reporter.log("new role page displayed");
+		}else
+		{
+			Reporter.log("new role page is not displayed");
+		}
+		
+	}
+	@Test(priority=7)
+	public void testEmployeesPage() {
+		adminHomePageObj.clickemployee();
+		EmployeesPageobj.clickNewEmployee();
+		NewEmployeePageCreationobj.fillEmployerName("pradeep");
+		NewEmployeePageCreationobj.selectRole("abcd");
+		NewEmployeePageCreationobj.selectBranch("123456");
+		String alertText = driver.switchTo().alert().getText();
+		driver.switchTo().alert().accept();
+		if(alertText.contains("New Employer Created ID Successfully")) {
+			Reporter.log("Employeer id created");
+		}else
+			Reporter.log("not created");
+	}
+	@Test(priority=8)
+	public void employeeCreationReset()
+	{
+		adminHomePageObj.clickemployee();
+		EmployeesPageobj.clickNewEmployee();
+		NewEmployeePageCreationobj.fillEmployerName("pradeep");
+		NewEmployeePageCreationobj.selectRole("abcd");
+		NewEmployeePageCreationobj.selectBranch("123456");
+		NewEmployeePageCreationobj.clickreset();
+	}
+	
+	@Test(priority=9)
+	public void employeeCreationWithoutData() {
+		adminHomePageObj.clickemployee();
+		EmployeesPageobj.clickNewEmployee();
+		NewEmployeePageCreationobj.clickCancel();
+		if(EmployeesPageobj.newEmployeeIsDisplayed() ){
+			Reporter.log("new employee page displayed");
+		}else
+		{
+			Reporter.log("new employee page is not displayed");
+		}
+	}
+	
+	
+	
+	
 }
