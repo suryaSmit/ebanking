@@ -23,8 +23,17 @@ public class RolesPage extends AdminHomePage {
 
 	// click new role button
 
-	public void newRole() {
+	public void clicknewRole() {
 		this.newRole.click();
+	}
+	
+	public boolean newRoleIsDisplayed() {
+//		if(newRole.isDisplayed()) {
+//			return true;
+//		}else {
+//			return false;
+//		}
+		return (newRole.isDisplayed())?true:false;
 	}
 
 }

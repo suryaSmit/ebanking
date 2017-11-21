@@ -57,17 +57,17 @@ public class NewRoleCreation extends AdminHomePage {
 	}
 
 	// click submit
-	public void submit() {
+	public void clickSubmit() {
 		this.submit.click();
 	}
 
 	// click reset
-	public void reset() {
+	public void clickReset() {
 		this.reset.click();
 	}
 
 	// click cancel
-	public void cancel() {
+	public void clickCancel() {
 		this.cancel.click();
 	}
 
