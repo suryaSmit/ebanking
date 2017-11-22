@@ -1,10 +1,14 @@
 package kexim.ebanking;
 
+import static org.testng.Assert.assertTrue;
+
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -14,7 +18,8 @@ import org.testng.annotations.Test;
 
 public class TestExecution {
 
-	WebDriver driver;
+	WebDriver wdriver;
+	EventFiringWebDriver driver;
 	KeximHomePage keximHomePageObj;
 	AdminHomePage adminHomePageObj;
 	BranchesPage branchesPageObj;
@@ -24,13 +29,16 @@ public class TestExecution {
 	EmployeesPage EmployeesPageobj;
 	NewEmployeePageCreation NewEmployeePageCreationobj;
 
-	@BeforeClass(groups= {"branches","roles","employee","creation","reset","cancel"})
+	@BeforeClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void launchBrowser() {
 		// System.setProperty("webdriver.chrome.driver",
 		// "‪C:\\Users\\prudhviraj\\Music\\chromedriver_win32\\chromedriver.exe");
 		// this.driver = new ChromeDriver();
-		System.setProperty("webdriver.gecko.driver", "/Users/surya/Documents/selenium/softwares/geckodriver");
-		this.driver = new FirefoxDriver();
+ 		System.setProperty("webdriver.gecko.driver", "/Users/surya/Documents/selenium/softwares/geckodriver");
+		this.wdriver = new FirefoxDriver();
+		driver = new EventFiringWebDriver(wdriver);
+		EventListener elistener = new EventListener();
+		driver.register(elistener);
 		driver.get("http://srssprojects.in/");
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -45,13 +53,13 @@ public class TestExecution {
 
 	}
 
-	@AfterClass(groups= {"branches","roles","employee","creation","reset","cancel"})
+	@AfterClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void closeBrowser() {
 		driver.close();
 	}
 
 	// verify admin login functionality with valid data
-	@BeforeMethod(groups= {"branches","roles","employee","creation","reset","cancel"})
+	@BeforeMethod(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void testAdminLogin() {
 		keximHomePageObj.fillUserName("Admin", driver);
 		keximHomePageObj.fillPasword("Admin", driver);
@@ -59,13 +67,13 @@ public class TestExecution {
 	}
 
 	// verify logout functionality
-	@AfterMethod(groups= {"branches","roles","employee","creation","reset","cancel"})
+	@AfterMethod(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void testLogout() throws InterruptedException {
 		Thread.sleep(2000);
 		adminHomePageObj.clickLogout();
 	}
 
-	@Test(priority = 0, groups= {"branches","creation"})
+	@Test(priority = 0, groups = { "branches", "creation" })
 	public void testBranchCreation() {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
@@ -78,14 +86,11 @@ public class TestExecution {
 		newBranchCreationPageObj.clickSubmit();
 		String alertText = driver.switchTo().alert().getText();
 		driver.switchTo().alert().accept();
-		if (alertText.contains("New Branch with id")) {
-			Reporter.log("branch created successfully");
-		} else {
-			Reporter.log("Branch creation failed");
-		}
+		boolean testResutlt = Validations.compareText(alertText, "New Branch with id");
+		assertTrue(testResutlt);
 	}
 
-	@Test(priority = 1, groups= {"branches","reset"})
+	@Test(priority = 1, groups = { "branches", "reset" })
 	public void testBranchCreationReset() {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
@@ -96,10 +101,13 @@ public class TestExecution {
 		newBranchCreationPageObj.SelectState("Andhra Pradesh");
 		newBranchCreationPageObj.SelectCity("Hyderabad");
 		newBranchCreationPageObj.clickReset();
+		String defaultCountry = newBranchCreationPageObj.getDefaultCountry();
+		boolean testResult = Validations.compareText(defaultCountry, "Select");
+		assertTrue(testResult);
 
 	}
 
-	@Test(priority = 2,groups= {"branches","cancel"})
+	@Test(priority = 2, groups = { "branches", "cancel" })
 	public void testBranchCreationCancelWithOutEnteringData() {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
@@ -111,7 +119,7 @@ public class TestExecution {
 		}
 	}
 
-	@Test(priority = 3, groups= {"branches","cancel"})
+	@Test(priority = 3, groups = { "branches", "cancel" })
 	public void testBranchCretionCancelWithData() {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
@@ -126,7 +134,7 @@ public class TestExecution {
 		}
 	}
 
-	@Test(priority = 4,groups= {"roles","creation"})
+	@Test(priority = 4, groups = { "roles", "creation" })
 	public void testRoleCreation() {
 
 		adminHomePageObj.clickRoles();
@@ -144,7 +152,7 @@ public class TestExecution {
 		}
 	}
 
-	@Test(priority = 5, groups= {"roles","reset"})
+	@Test(priority = 5, groups = { "roles", "reset" })
 	public void testRoleCreationReset() {
 		adminHomePageObj.clickRoles();
 		RolesPageobj.clicknewRole();
@@ -155,7 +163,7 @@ public class TestExecution {
 
 	}
 
-	@Test(priority = 6, groups= {"roles","cancel"})
+	@Test(priority = 6, groups = { "roles", "cancel" })
 	public void testRoleCreationCancelWithOutData() {
 		adminHomePageObj.clickRoles();
 		RolesPageobj.clicknewRole();
@@ -168,14 +176,15 @@ public class TestExecution {
 
 	}
 
-	@Test(priority = 7, groups= {"employee","creation"})
+	@Test(priority = 7, groups = { "employee", "creation" })
 	public void testEmployeeCreation() {
 		adminHomePageObj.clickEmployee();
 		EmployeesPageobj.clickNewEmployee();
 		NewEmployeePageCreationobj.fillEmployerName("pradeep");
 		NewEmployeePageCreationobj.fillLoginPassword("selenium");
 		NewEmployeePageCreationobj.selectRole("manager");
-		NewEmployeePageCreationobj.selectBranch("Ameerpet");
+		NewEmployeePageCreationobj.selectBranch("kphb branch 1");
+		NewEmployeePageCreationobj.clicksubmit();
 		String alertText = driver.switchTo().alert().getText();
 		driver.switchTo().alert().accept();
 		if (alertText.contains("New Employer Created ID Successfully")) {
@@ -184,7 +193,7 @@ public class TestExecution {
 			Reporter.log("not created");
 	}
 
-	@Test(priority = 8,groups= {"employee","reset"})
+	@Test(priority = 8, groups = { "employee", "reset" })
 	public void employeeCreationReset() {
 		adminHomePageObj.clickEmployee();
 		EmployeesPageobj.clickNewEmployee();
@@ -194,7 +203,7 @@ public class TestExecution {
 		NewEmployeePageCreationobj.clickreset();
 	}
 
-	@Test(priority = 9, groups= {"employee","cancel"})
+	@Test(priority = 9, groups = { "employee", "cancel" })
 	public void employeeCreationWithoutData() {
 		adminHomePageObj.clickEmployee();
 		EmployeesPageobj.clickNewEmployee();

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="group of groups suite">
+	<test name="group of groups test">
+		<groups>
+			<define name="branches creation">
+				<include name="branches"></include>
+				<include name="creation"></include>
+			</define>
+			<run>
+				<include name="branches creation"></include>
+			</run>
+		</groups>
+		<classes>
+			<class name="kexim.ebanking.TestExecution" />
+		</classes>
+	</test>
+</suite>

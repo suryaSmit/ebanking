@@ -98,8 +98,8 @@ public class NewBranchCreationPage extends AdminHomePage {
 		new Select(this.country).selectByVisibleText(country);
 	}
 
-	public WebElement getDefaultCountry() {
-		return new Select(this.country).getFirstSelectedOption();
+	public String getDefaultCountry() {
+		return new Select(this.country).getFirstSelectedOption().getText();
 	}
 	// selectState
 	public void SelectState(String state) {

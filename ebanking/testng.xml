@@ -4,9 +4,7 @@
         <classes>
             <class name="kexim.ebanking.TestExecution">
                 <methods>
-                    <include name="testRoleCreation"/>
-                    <include name="testRoleCreationReset"/>
-                    <inlcude name="testRoleCreationCancelWithOutData"/>
+                    <include name="testBranchCreation"/>
                 </methods>
             </class>
         </classes>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="dependent suite">
+	<test name="dependent test">
+		<groups>
+			<run>
+				<include name="branches"></include>
+				<include name="creation"></include>
+			</run>
+			<dependencies>
+				<group depends-on="branches" name="creation"></group>
+			</dependencies>
+		</groups>
+		<classes>
+			<class name="kexim.ebanking.TestExecution">
+				<!-- <methods> <include name="testBranchCreation"></include> <include 
+					name="testEmployeeCreation"/> </methods> -->
+			</class>
+		</classes>
+	</test>
+</suite>
