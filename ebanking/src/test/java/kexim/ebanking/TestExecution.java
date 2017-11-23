@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -14,6 +15,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class TestExecution {
@@ -28,18 +30,31 @@ public class TestExecution {
 	NewRoleCreation NewRoleCreationobj;
 	EmployeesPage EmployeesPageobj;
 	NewEmployeePageCreation NewEmployeePageCreationobj;
+	
+	private void launchBrowserByName(String brow) {
+		if(brow.equals("firefox")) {
+			System.setProperty("webdriver.gecko.driver", "/Users/surya/Documents/selenium/softwares/geckodriver");
+			this.wdriver = new FirefoxDriver();
+		}else if(brow.equals("chrome")) {
+			System.setProperty("webdriver.chrome.driver", "/Users/surya/Documents/selenium/softwares/chromedriver");
+			this.wdriver = new ChromeDriver();
+		}else if(brow.equals("safari")) {
+			this.wdriver = new SafariDriver();
+		}
+	}
+
 
 	@BeforeClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
-	public void launchBrowser() {
+	@Parameters({"url","browser"})
+	public void launchBrowser(String url, String brow) {
 		// System.setProperty("webdriver.chrome.driver",
 		// "‪C:\\Users\\prudhviraj\\Music\\chromedriver_win32\\chromedriver.exe");
 		// this.driver = new ChromeDriver();
- 		System.setProperty("webdriver.gecko.driver", "/Users/surya/Documents/selenium/softwares/geckodriver");
-		this.wdriver = new FirefoxDriver();
+		launchBrowserByName(brow);
 		driver = new EventFiringWebDriver(wdriver);
 		EventListener elistener = new EventListener();
 		driver.register(elistener);
-		driver.get("http://srssprojects.in/");
+		driver.get(url);
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		keximHomePageObj = new KeximHomePage();
@@ -53,6 +68,7 @@ public class TestExecution {
 
 	}
 
+	
 	@AfterClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void closeBrowser() {
 		driver.close();
@@ -60,9 +76,10 @@ public class TestExecution {
 
 	// verify admin login functionality with valid data
 	@BeforeMethod(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
-	public void testAdminLogin() {
-		keximHomePageObj.fillUserName("Admin", driver);
-		keximHomePageObj.fillPasword("Admin", driver);
+	@Parameters({"username","password"})
+	public void testAdminLogin(String uname, String pwd) {
+		keximHomePageObj.fillUserName(uname, driver);
+		keximHomePageObj.fillPasword(pwd, driver);
 		keximHomePageObj.clickLogin(driver);
 	}
 
