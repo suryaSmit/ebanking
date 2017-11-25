@@ -1,14 +1,13 @@
 package kexim.ebanking;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -31,10 +30,12 @@ public class TestExecution {
 
 	@BeforeClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void launchBrowser() {
-		// System.setProperty("webdriver.chrome.driver",
-		// "‪C:\\Users\\prudhviraj\\Music\\chromedriver_win32\\chromedriver.exe");
+
 		// this.driver = new ChromeDriver();
- 		System.setProperty("webdriver.gecko.driver", "/Users/surya/Documents/selenium/softwares/geckodriver");
+		// System.setProperty("webdriver.gecko.driver",
+		// "/Users/surya/Documents/selenium/softwares/geckodriver");
+
+		System.setProperty("webdriver.gecko.driver", ".\\drivers\\geckodriver.exe");
 		this.wdriver = new FirefoxDriver();
 		driver = new EventFiringWebDriver(wdriver);
 		EventListener elistener = new EventListener();
@@ -112,11 +113,8 @@ public class TestExecution {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
 		newBranchCreationPageObj.clickCancel();
-		if (branchesPageObj.newBranchIsDisplayed()) {
-			Reporter.log("test passed");
-		} else {
-			Reporter.log("test failed");
-		}
+		assertEquals(branchesPageObj.newBranchIsDisplayed(), true);
+		Reporter.log("branches page is displayed");
 	}
 
 	@Test(priority = 3, groups = { "branches", "cancel" })
@@ -127,11 +125,13 @@ public class TestExecution {
 		newBranchCreationPageObj.fillAddress1("kphb main road");
 		newBranchCreationPageObj.fillZipcode("52315");
 		newBranchCreationPageObj.clickCancel();
-		if (branchesPageObj.newBranchIsDisplayed()) {
-			Reporter.log("test passed");
-		} else {
-			Reporter.log("test failed");
-		}
+		// assertEquals(branchesPageObj.newBranchIsDisplayed(),true);
+		assertTrue(branchesPageObj.newBranchIsDisplayed());
+		Reporter.log("branches page is displayed");
+		/*
+		 * if (branchesPageObj.newBranchIsDisplayed()) { Reporter.log("test passed"); }
+		 * else { Reporter.log("test failed"); }
+		 */
 	}
 
 	@Test(priority = 4, groups = { "roles", "creation" })
@@ -145,11 +145,14 @@ public class TestExecution {
 		NewRoleCreationobj.clickSubmit();
 		String alertText = driver.switchTo().alert().getText();
 		driver.switchTo().alert().accept();
-		if (alertText.contains("new Role creation with id")) {
-			Reporter.log("new Role has been creted succesfully");
-		} else {
-			Reporter.log("role creation failed");
-		}
+		boolean testResutlt1 = Validations.compareText(alertText, "new role with id");
+		assertTrue(testResutlt1);
+
+		/*
+		 * if (alertText.contains("new Role creation with id")) {
+		 * Reporter.log("new Role has been creted succesfully"); } else {
+		 * Reporter.log("role creation failed"); }
+		 */
 	}
 
 	@Test(priority = 5, groups = { "roles", "reset" })
@@ -161,6 +164,10 @@ public class TestExecution {
 		NewRoleCreationobj.selectRoleType("E");
 		NewRoleCreationobj.clickReset();
 
+		String selectRole = NewRoleCreationobj.getDefaultSelectRoleType();
+		boolean testResult2 = Validations.compareText(selectRole, "Select");
+		assertTrue(testResult2);
+
 	}
 
 	@Test(priority = 6, groups = { "roles", "cancel" })
@@ -168,11 +175,15 @@ public class TestExecution {
 		adminHomePageObj.clickRoles();
 		RolesPageobj.clicknewRole();
 		NewRoleCreationobj.clickCancel();
-		if (RolesPageobj.newRoleIsDisplayed()) {
-			Reporter.log("new role page displayed");
-		} else {
-			Reporter.log("new role page is not displayed");
-		}
+
+		assertEquals(RolesPageobj.newRoleIsDisplayed(), false);
+		Reporter.log("Roles page is displayed");
+
+		/*
+		 * if (RolesPageobj.newRoleIsDisplayed()) {
+		 * Reporter.log("new role page displayed"); } else {
+		 * Reporter.log("new role page is not displayed"); }
+		 */
 
 	}
 
@@ -187,10 +198,13 @@ public class TestExecution {
 		NewEmployeePageCreationobj.clicksubmit();
 		String alertText = driver.switchTo().alert().getText();
 		driver.switchTo().alert().accept();
-		if (alertText.contains("New Employer Created ID Successfully")) {
-			Reporter.log("Employeer id created");
-		} else
-			Reporter.log("not created");
+		boolean testResutlt2 = Validations.compareText(alertText, "new Employeer created with id successfully");
+		assertTrue(testResutlt2);
+
+		/*
+		 * if (alertText.contains("New Employer Created ID Successfully")) {
+		 * Reporter.log("Employeer id created"); } else
+		 */ // Reporter.log("not created");
 	}
 
 	@Test(priority = 8, groups = { "employee", "reset" })
@@ -201,6 +215,14 @@ public class TestExecution {
 		NewEmployeePageCreationobj.selectRole("manager");
 		NewEmployeePageCreationobj.selectBranch("123456");
 		NewEmployeePageCreationobj.clickreset();
+		String selectRole = NewEmployeePageCreationobj.getDefaultSelectRoleType();
+		boolean testResult2 = Validations.compareText(selectRole, "Select");
+		assertTrue(testResult2);
+
+		String selectBranch = NewEmployeePageCreationobj.getDefaultSelectBranchType();
+		boolean testResult3 = Validations.compareText(selectBranch, "Select");
+		assertTrue(testResult3);
+
 	}
 
 	@Test(priority = 9, groups = { "employee", "cancel" })
@@ -208,11 +230,14 @@ public class TestExecution {
 		adminHomePageObj.clickEmployee();
 		EmployeesPageobj.clickNewEmployee();
 		NewEmployeePageCreationobj.clickCancel();
-		if (EmployeesPageobj.newEmployeeIsDisplayed()) {
-			Reporter.log("new employee page displayed");
-		} else {
-			Reporter.log("new employee page is not displayed");
-		}
+		assertEquals(EmployeesPageobj.newEmployeeIsDisplayed(), false);
+		Reporter.log("employees page is displayed");
+
+		/*
+		 * if (EmployeesPageobj.newEmployeeIsDisplayed()) {
+		 * Reporter.log("new employee page displayed"); } else {
+		 * Reporter.log("new employee page is not displayed"); }
+		 */
 	}
 
 }
