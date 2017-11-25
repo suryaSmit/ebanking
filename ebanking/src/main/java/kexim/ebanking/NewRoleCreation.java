@@ -49,7 +49,10 @@ public class NewRoleCreation extends AdminHomePage {
 	public void fillRoledescription(String roledescription) {
 		this.RoleDesc.sendKeys(roledescription);
 	}
-
+	//get default select roll type
+	public String getDefaultSelectRoleType() {
+		return new Select(this.RoleType).getFirstSelectedOption().getText();
+	}
 	// selectRoleType
 	public void selectRoleType(String RoleType) {
 		// Anonymous Object

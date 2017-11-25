@@ -88,6 +88,14 @@ public class NewEmployeePageCreation extends AdminHomePage {
 		this.Cancel.click();
 	}
 	
+	//get default select roll type
+		public String getDefaultSelectRoleType() {
+			return new Select(this.Role).getFirstSelectedOption().getText();
+		}
+		//get default branch type
 	
+		public String getDefaultSelectBranchType() {
+			return new Select(this.Branch).getFirstSelectedOption().getText();
+		}
 	
 }
