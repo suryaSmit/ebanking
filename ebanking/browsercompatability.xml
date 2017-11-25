@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="browser compatability">
+    <parameter name="url" value="http://www.srssprojects.in"></parameter>
+    <parameter name="username" value="Admin"></parameter>
+    <parameter name="password" value="Admin"></parameter>
+    <test name="firefox test">
+        <parameter name="browser" value="firefox"></parameter>
+        <groups>
+            <run>
+                <include name="roles"></include>
+            </run>
+        </groups>
+        <classes>
+            <class name="kexim.ebanking.TestExecution">
+            </class>
+        </classes>
+    </test>
+    <test name="chrome test">
+        <parameter name="browser" value="chrome"></parameter>
+        <groups>
+            <run>
+                <include name="roles"></include>
+            </run>
+        </groups>
+        <classes>
+            <class name="kexim.ebanking.TestExecution">
+            </class>
+        </classes>
+    </test>
+   <!--  <test name="safari test">
+        <parameter name="browser" value="safari"></parameter>
+        <groups>
+            <run>
+                <include name="roles"></include>
+            </run>
+        </groups>
+        <classes>
+            <class name="kexim.ebanking.TestExecution">
+            </class>
+        </classes>
+    </test> -->
+</suite>
