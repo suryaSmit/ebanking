@@ -2,11 +2,16 @@ package kexim.ebanking;
 
 import static org.testng.Assert.assertTrue;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.Assert;
@@ -31,6 +36,29 @@ public class TestExecution {
 	EmployeesPage EmployeesPageobj;
 	NewEmployeePageCreation NewEmployeePageCreationobj;
 	
+	//to work with selenium grid
+	private void launchGrid(String url, String brow)  {
+		DesiredCapabilities caps = new DesiredCapabilities();
+		if(brow.equals("firefox")) {
+			caps = DesiredCapabilities.firefox();
+			caps.setBrowserName("firefox");
+			caps.setPlatform(Platform.MAC);
+		}else if(brow.equals("chrome")) {
+			caps =DesiredCapabilities.chrome();
+			caps.setBrowserName("chrome");
+			caps.setPlatform(Platform.WIN8_1);
+		}else if(brow.equals("safari")) {
+			caps = DesiredCapabilities.safari();
+			caps.setBrowserName("safari");	
+		}
+		try {
+			this.wdriver = new RemoteWebDriver(new URL(url), caps);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void launchBrowserByName(String brow) {
 		if(brow.equals("firefox")) {
 			System.setProperty("webdriver.gecko.driver", "/Users/surya/Documents/selenium/softwares/geckodriver");
@@ -50,11 +78,12 @@ public class TestExecution {
 		// System.setProperty("webdriver.chrome.driver",
 		// "‪C:\\Users\\prudhviraj\\Music\\chromedriver_win32\\chromedriver.exe");
 		// this.driver = new ChromeDriver();
-		launchBrowserByName(brow);
+//		launchBrowserByName(brow);
+		launchGrid(url, brow);
 		driver = new EventFiringWebDriver(wdriver);
 		EventListener elistener = new EventListener();
 		driver.register(elistener);
-		driver.get(url);
+		driver.get("http://srssprojects.in");
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		keximHomePageObj = new KeximHomePage();
@@ -68,7 +97,10 @@ public class TestExecution {
 
 	}
 
+
 	
+
+
 	@AfterClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void closeBrowser() {
 		driver.close();
