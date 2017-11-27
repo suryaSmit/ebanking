@@ -3,9 +3,10 @@
 <suite name="parallel" parallel="tests" thread-count="2">
 	<parameter name="username" value="Admin"></parameter>
 	<parameter name="password" value="Admin"></parameter>
-	<test name="firefox test in node 1">
+	<test name="firefox test in ubuntu">
 		<parameter name="browser" value="firefox"></parameter>
-		<parameter name="url" value="http://192.168.43.155:5555/wd/hub"></parameter>
+		<parameter name="url" value="http://192.168.47.130:5555/wd/hub"></parameter>
+		<parameter name="os" value="ubuntu"></parameter>
 		<groups>
 			<run>
 				<include name="roles"></include>
@@ -16,9 +17,10 @@
 			</class>
 		</classes>
 	</test>
-	<test name="chrome test in node 2">
+	<test name="chrome test in mac">
 		<parameter name="browser" value="chrome"></parameter>
-		<parameter name="url" value="http://192.168.43.251:5555/wd/hub"></parameter>
+		<parameter name="url" value="http://192.168.47.1:5555/wd/hub"></parameter>
+		<parameter name="os" value="mac"></parameter>
 		<groups>
 			<run>
 				<include name="roles"></include>

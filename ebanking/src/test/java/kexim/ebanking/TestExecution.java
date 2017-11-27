@@ -37,19 +37,25 @@ public class TestExecution {
 	NewEmployeePageCreation NewEmployeePageCreationobj;
 	
 	//to work with selenium grid
-	private void launchGrid(String url, String brow)  {
+	private void launchGrid(String url, String brow, String os)  {
 		DesiredCapabilities caps = new DesiredCapabilities();
 		if(brow.equals("firefox")) {
 			caps = DesiredCapabilities.firefox();
 			caps.setBrowserName("firefox");
-			caps.setPlatform(Platform.MAC);
-		}else if(brow.equals("chrome")) {
+		}
+		if(brow.equals("chrome")) {
 			caps =DesiredCapabilities.chrome();
 			caps.setBrowserName("chrome");
-			caps.setPlatform(Platform.WIN8_1);
-		}else if(brow.equals("safari")) {
+		}
+		if(brow.equals("safari")) {
 			caps = DesiredCapabilities.safari();
 			caps.setBrowserName("safari");	
+		}
+		if(os.equals("ubuntu")) {
+			caps.setPlatform(Platform.LINUX);
+		}
+		if(os.equals("mac")) {
+			caps.setPlatform(Platform.MAC);
 		}
 		try {
 			this.wdriver = new RemoteWebDriver(new URL(url), caps);
@@ -73,13 +79,13 @@ public class TestExecution {
 
 
 	@BeforeClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel"})
-	@Parameters({"url","browser"})
-	public void launchBrowser(String url, String brow) {
+	@Parameters({"url","browser", "os"})
+	public void launchBrowser(String url, String brow, String os) {
 		// System.setProperty("webdriver.chrome.driver",
 		// "‪C:\\Users\\prudhviraj\\Music\\chromedriver_win32\\chromedriver.exe");
 		// this.driver = new ChromeDriver();
 //		launchBrowserByName(brow);
-		launchGrid(url, brow);
+		launchGrid(url, brow, os);
 		// System.setProperty("webdriver.gecko.driver",
 		// "/Users/surya/Documents/selenium/softwares/geckodriver");
 
@@ -102,9 +108,6 @@ public class TestExecution {
 		NewEmployeePageCreationobj = new NewEmployeePageCreation(driver);
 
 	}
-
-
-	
 
 
 	@AfterClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
