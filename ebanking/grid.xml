@@ -5,7 +5,7 @@
 	<parameter name="password" value="Admin"></parameter>
 	<test name="firefox test in ubuntu">
 		<parameter name="browser" value="firefox"></parameter>
-		<parameter name="url" value="http://192.168.47.130:5555/wd/hub"></parameter>
+		<parameter name="url" value="http://192.168.47.131:5555/wd/hub"></parameter>
 		<parameter name="os" value="ubuntu"></parameter>
 		<groups>
 			<run>

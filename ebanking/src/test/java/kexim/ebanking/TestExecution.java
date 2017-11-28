@@ -84,8 +84,8 @@ public class TestExecution {
 		// System.setProperty("webdriver.chrome.driver",
 		// "‪C:\\Users\\prudhviraj\\Music\\chromedriver_win32\\chromedriver.exe");
 		// this.driver = new ChromeDriver();
-//		launchBrowserByName(brow);
-		launchGrid(url, brow, os);
+		launchBrowserByName(brow);
+//		launchGrid(url, brow, os);
 		// System.setProperty("webdriver.gecko.driver",
 		// "/Users/surya/Documents/selenium/softwares/geckodriver");
 
