@@ -3,6 +3,8 @@ package kexim.ebanking;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import org.testng.annotations.DataProvider;
+
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.write.Label;
@@ -14,11 +16,12 @@ public class Excel {
 	private Sheet sh;
 	private WritableWorkbook wbook;
 	private WritableSheet wsh;
+	FileInputStream fis;
 
 	// set excel file to read the data
 	public void setExcel(String filePath, String fileName, String sheetName) {
 		try {
-			FileInputStream fis = new FileInputStream(filePath + fileName);
+			fis = new FileInputStream(filePath + fileName);
 			book = Workbook.getWorkbook(fis);
 			sh = book.getSheet(sheetName);
 		} catch (Exception e) {
@@ -42,9 +45,11 @@ public class Excel {
 	}
 
 	// set excel file to write the data
-	public void setExcelToWriteData(String filePath, String fileName, String sheetName) {
+	public void setExcelToWriteData(String filePath, String ifileName, String ofileName, String sheetName) {
 		try {
-			FileOutputStream fos = new FileOutputStream(filePath + fileName);
+			fis = new FileInputStream(filePath + ifileName);
+			book = Workbook.getWorkbook(fis);
+			FileOutputStream fos = new FileOutputStream(filePath + ofileName);
 			wbook = Workbook.createWorkbook(fos, book);
 			wsh = wbook.getSheet(sheetName);
 		} catch (Exception e) {
@@ -70,5 +75,23 @@ public class Excel {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+
+	public Object[][] getExcelData(String filePath, String fileName, String sheetName) {
+		setExcel(filePath, fileName, sheetName);
+		int nor = getNoOfRows();
+		int noc = getNoOfColumns();
+		String[][] data = new String[nor-1][noc];
+		for(int i=1; i<nor;i++) {
+			for(int j=0;j<noc;j++) {
+				data[i-1][j] = readData(i, j);
+			}
+		}
+		return data;
+	}
+	
+	@DataProvider(name="branch data")
+	public Object[][] getBranchData(){
+		return getExcelData("/Users/surya/Documents/", "kexim data.xls", "branches");
 	}
 }

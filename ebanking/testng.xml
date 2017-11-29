@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="ebanking">
-    <test name="roles test">
-        <classes>
-            <class name="kexim.ebanking.TestExecution">
-                <methods>
-                    <include name="testBranchCreation"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
+	<test name="roles test">
+		<parameter name="username" value="Admin"></parameter>
+		<parameter name="password" value="Admin"></parameter>
+		<classes>
+			<class name="kexim.ebanking.TestExecution">
+				<methods>
+					<include name="branchCreationWithExcelData" />
+				</methods>
+			</class>
+		</classes>
+	</test>
 </suite>

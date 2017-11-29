@@ -20,6 +20,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -35,26 +36,27 @@ public class TestExecution {
 	NewRoleCreation NewRoleCreationobj;
 	EmployeesPage EmployeesPageobj;
 	NewEmployeePageCreation NewEmployeePageCreationobj;
-	
-	//to work with selenium grid
-	private void launchGrid(String url, String brow, String os)  {
+	Excel excel = new Excel();
+
+	// to work with selenium grid
+	private void launchGrid(String url, String brow, String os) {
 		DesiredCapabilities caps = new DesiredCapabilities();
-		if(brow.equals("firefox")) {
+		if (brow.equals("firefox")) {
 			caps = DesiredCapabilities.firefox();
 			caps.setBrowserName("firefox");
 		}
-		if(brow.equals("chrome")) {
-			caps =DesiredCapabilities.chrome();
+		if (brow.equals("chrome")) {
+			caps = DesiredCapabilities.chrome();
 			caps.setBrowserName("chrome");
 		}
-		if(brow.equals("safari")) {
+		if (brow.equals("safari")) {
 			caps = DesiredCapabilities.safari();
-			caps.setBrowserName("safari");	
+			caps.setBrowserName("safari");
 		}
-		if(os.equals("ubuntu")) {
+		if (os.equals("ubuntu")) {
 			caps.setPlatform(Platform.LINUX);
 		}
-		if(os.equals("mac")) {
+		if (os.equals("mac")) {
 			caps.setPlatform(Platform.MAC);
 		}
 		try {
@@ -64,34 +66,34 @@ public class TestExecution {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void launchBrowserByName(String brow) {
-		if(brow.equals("firefox")) {
+		if (brow.equals("firefox")) {
 			System.setProperty("webdriver.gecko.driver", "/Users/surya/Documents/selenium/softwares/geckodriver");
 			this.wdriver = new FirefoxDriver();
-		}else if(brow.equals("chrome")) {
+		} else if (brow.equals("chrome")) {
 			System.setProperty("webdriver.chrome.driver", "/Users/surya/Documents/selenium/softwares/chromedriver");
 			this.wdriver = new ChromeDriver();
-		}else if(brow.equals("safari")) {
+		} else if (brow.equals("safari")) {
 			this.wdriver = new SafariDriver();
 		}
 	}
+//	@Parameters({ "url", "browser", "os" })
 
-
-	@BeforeClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel"})
-	@Parameters({"url","browser", "os"})
-	public void launchBrowser(String url, String brow, String os) {
+	@BeforeClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
+//	public void launchBrowser(String url, String brow, String os) {
+	public void launchBrowser() {
 		// System.setProperty("webdriver.chrome.driver",
 		// "‪C:\\Users\\prudhviraj\\Music\\chromedriver_win32\\chromedriver.exe");
 		// this.driver = new ChromeDriver();
-		launchBrowserByName(brow);
-//		launchGrid(url, brow, os);
-		// System.setProperty("webdriver.gecko.driver",
-		// "/Users/surya/Documents/selenium/softwares/geckodriver");
-
-//		System.setProperty("webdriver.gecko.driver", ".\\drivers\\geckodriver.exe");
-//		this.wdriver = new FirefoxDriver();
 //		launchBrowserByName(brow);
+		// launchGrid(url, brow, os);
+		 System.setProperty("webdriver.gecko.driver",
+		 "/Users/surya/Documents/selenium/softwares/geckodriver");
+
+		// System.setProperty("webdriver.gecko.driver", ".\\drivers\\geckodriver.exe");
+		 this.wdriver = new FirefoxDriver();
+		// launchBrowserByName(brow);
 		driver = new EventFiringWebDriver(wdriver);
 		EventListener elistener = new EventListener();
 		driver.register(elistener);
@@ -109,7 +111,6 @@ public class TestExecution {
 
 	}
 
-
 	@AfterClass(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void closeBrowser() {
 		driver.close();
@@ -117,7 +118,7 @@ public class TestExecution {
 
 	// verify admin login functionality with valid data
 	@BeforeMethod(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
-	@Parameters({"username","password"})
+	@Parameters({ "username", "password" })
 	public void testAdminLogin(String uname, String pwd) {
 		keximHomePageObj.fillUserName(uname, driver);
 		keximHomePageObj.fillPasword(pwd, driver);
@@ -165,6 +166,47 @@ public class TestExecution {
 
 	}
 
+	// branch creation with multiple sets of data
+//	@Test(groups = {"excel data"})
+//	public void branchCreationWithExcelData() {
+//		excel.setExcel("/Users/surya/Documents/", "kexim data.xls", "branches");
+//		int nor = excel.getNoOfRows();
+//		int noc = excel.getNoOfColumns();
+//		adminHomePageObj.clickBrnaches();
+//		for (int i = 1; i < nor; i++) {
+//			branchesPageObj.clickNewBranch();
+//			newBranchCreationPageObj.fillbranchName(excel.readData(i, 0));
+//			newBranchCreationPageObj.fillAddress1(excel.readData(i, 1));
+//			newBranchCreationPageObj.fillZipcode(excel.readData(i, 2));
+//			newBranchCreationPageObj.SelectCountry(excel.readData(i, 3));
+//			newBranchCreationPageObj.SelectState(excel.readData(i, 4));
+//			newBranchCreationPageObj.SelectCity(excel.readData(i, 5));
+//			newBranchCreationPageObj.clickSubmit();
+//			String alertText = driver.switchTo().alert().getText();
+//			driver.switchTo().alert().accept();
+//			boolean testResutlt = Validations.compareText(alertText, "New Branch with id");
+//			assertTrue(testResutlt);
+//		}
+//	}
+	
+	
+
+	@Test(dataProviderClass=Excel.class, dataProvider="branch data")
+	public void branchCreationWithExcelData(String branchName, String add1, String zcode, String country, String state, String city) {
+		adminHomePageObj.clickBrnaches();
+		branchesPageObj.clickNewBranch();
+		newBranchCreationPageObj.fillbranchName(branchName);
+		newBranchCreationPageObj.fillAddress1(add1);
+		newBranchCreationPageObj.fillZipcode(zcode);
+		newBranchCreationPageObj.SelectCountry(country);
+		newBranchCreationPageObj.SelectState(state);
+		newBranchCreationPageObj.SelectCity(city);
+		newBranchCreationPageObj.clickReset();
+		String defaultCountry = newBranchCreationPageObj.getDefaultCountry();
+		boolean testResult = Validations.compareText(defaultCountry, "Select");
+		assertTrue(testResult);
+	}
+	
 	@Test(priority = 2, groups = { "branches", "cancel" })
 	public void testBranchCreationCancelWithOutEnteringData() {
 		adminHomePageObj.clickBrnaches();

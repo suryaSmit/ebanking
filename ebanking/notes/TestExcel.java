@@ -19,7 +19,7 @@ public class TestExcel {
 		}
 		
 		//set excel file to write the data
-		excel.setExcelToWriteData("/Users/surya/Documents/", "outputdata.xls", "branches");
+		excel.setExcelToWriteData("/Users/surya/Documents/","kexim data.xls", "outputdata.xls", "branches");
 		for(int i=1;i<rows;i++) {
 			excel.writeData(i, 7, "test passed");
 		}
