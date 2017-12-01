@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="ebanking">
+    <listeners>
+        <listener class-name="kexim.ebanking.TestListener"></listener>
+    </listeners>
+	<test name="roles test">
+		<parameter name="username" value="Admin"></parameter>
+		<parameter name="password" value="Admin"></parameter>
+		<classes>
+			<class name="kexim.ebanking.TestExecution">
+				<methods>
+				    <include name="testAdminLogin"></include>
+					<include name="testBranchCreation" />
+					<include name="testBranchCreationReset"></include>
+					<include name="testLogout"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

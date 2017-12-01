@@ -117,7 +117,7 @@ public class TestExecution {
 	}
 
 	// verify admin login functionality with valid data
-	@BeforeMethod(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
+	@Test(priority= 0, groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	@Parameters({ "username", "password" })
 	public void testAdminLogin(String uname, String pwd) {
 		keximHomePageObj.fillUserName(uname, driver);
@@ -126,17 +126,17 @@ public class TestExecution {
 	}
 
 	// verify logout functionality
-	@AfterMethod(groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
+	@Test(priority=10,groups = { "branches", "roles", "employee", "creation", "reset", "cancel" })
 	public void testLogout() throws InterruptedException {
 		Thread.sleep(2000);
 		adminHomePageObj.clickLogout();
 	}
 
-	@Test(priority = 0, groups = { "branches", "creation" })
+	@Test(priority = 1, groups = { "branches", "creation" })
 	public void testBranchCreation() {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
-		newBranchCreationPageObj.fillbranchName("kphb branch 1");
+		newBranchCreationPageObj.fillbranchName("kphb branch 123");
 		newBranchCreationPageObj.fillAddress1("kphb main road");
 		newBranchCreationPageObj.fillZipcode("52315");
 		newBranchCreationPageObj.SelectCountry("INDIA");
@@ -149,7 +149,7 @@ public class TestExecution {
 		assertTrue(testResutlt);
 	}
 
-	@Test(priority = 1, groups = { "branches", "reset" })
+	@Test(priority = 2, groups = { "branches", "reset" })
 	public void testBranchCreationReset() {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
@@ -207,7 +207,7 @@ public class TestExecution {
 		assertTrue(testResult);
 	}
 	
-	@Test(priority = 2, groups = { "branches", "cancel" })
+	@Test(priority = 3, groups = { "branches", "cancel" })
 	public void testBranchCreationCancelWithOutEnteringData() {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
@@ -216,7 +216,7 @@ public class TestExecution {
 		Reporter.log("branches page is displayed");
 	}
 
-	@Test(priority = 3, groups = { "branches", "cancel" })
+	@Test(priority = 4, groups = { "branches", "cancel" })
 	public void testBranchCretionCancelWithData() {
 		adminHomePageObj.clickBrnaches();
 		branchesPageObj.clickNewBranch();
@@ -233,7 +233,7 @@ public class TestExecution {
 		 */
 	}
 
-	@Test(priority = 4, groups = { "roles", "creation" })
+	@Test(priority = 5, groups = { "roles", "creation" })
 	public void testRoleCreation() {
 
 		adminHomePageObj.clickRoles();
@@ -254,7 +254,7 @@ public class TestExecution {
 		 */
 	}
 
-	@Test(priority = 5, groups = { "roles", "reset" })
+	@Test(priority = 6, groups = { "roles", "reset" })
 	public void testRoleCreationReset() {
 		adminHomePageObj.clickRoles();
 		RolesPageobj.clicknewRole();
@@ -269,7 +269,7 @@ public class TestExecution {
 
 	}
 
-	@Test(priority = 6, groups = { "roles", "cancel" })
+	@Test(priority = 7, groups = { "roles", "cancel" })
 	public void testRoleCreationCancelWithOutData() {
 		adminHomePageObj.clickRoles();
 		RolesPageobj.clicknewRole();
@@ -286,7 +286,7 @@ public class TestExecution {
 
 	}
 
-	@Test(priority = 7, groups = { "employee", "creation" })
+	@Test(priority = 8, groups = { "employee", "creation" })
 	public void testEmployeeCreation() {
 		adminHomePageObj.clickEmployee();
 		EmployeesPageobj.clickNewEmployee();
@@ -306,7 +306,7 @@ public class TestExecution {
 		 */ // Reporter.log("not created");
 	}
 
-	@Test(priority = 8, groups = { "employee", "reset" })
+	@Test(priority = 9, groups = { "employee", "reset" })
 	public void employeeCreationReset() {
 		adminHomePageObj.clickEmployee();
 		EmployeesPageobj.clickNewEmployee();
