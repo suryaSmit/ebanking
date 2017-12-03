@@ -6,7 +6,7 @@
 		<classes>
 			<class name="kexim.ebanking.TestExecution">
 				<methods>
-					<include name="branchCreationWithExcelData" />
+					<include name="employeeCreationWithDatabase" />
 				</methods>
 			</class>
 		</classes>

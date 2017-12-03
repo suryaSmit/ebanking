@@ -5,6 +5,8 @@ import static org.testng.Assert.assertTrue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Platform;
@@ -338,5 +340,19 @@ public class TestExecution {
 		 * Reporter.log("new employee page is not displayed"); }
 		 */
 	}
+	
+	@Test(priority = 10,  groups= {"employee"})
+	public void employeeCreationWithDatabase() {
+		ResultSet rs = BankingDatabase.getDBTableContent("jdbc:mysql://127.0.0.1:3306/banking", "surya", "selenium", "select * from banking.employee where empName='raju'");
+		try {
+			while(rs.next()) {
+				System.out.println(rs.getString(1)+rs.getString(2)+rs.getString(3)+rs.getString(4));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 
 }
